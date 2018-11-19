@@ -1,0 +1,123 @@
+@font-face {
+    font-family:"Final Fantasy 3/6 Font Regular";
+    src:url("../fonts/final_fantasy_36_font.eot?") format("eot"),
+    url("../fonts/final_fantasy_36_font.woff") format("woff"),
+    url("../fonts/final_fantasy_36_font.ttf") format("truetype"),
+    url("../fonts/final_fantasy_36_font.svg#Final-Fantasy-3/6-Font") format("svg");
+    font-weight:normal;
+    font-style:normal;
+}
+
+html,body {
+    background-color: #191a1e;
+    font-family: "Final Fantasy 3/6 Font Regular";
+    color: white;
+    font-size: 40px;
+}
+
+#battlefield {
+    margin: 60px auto 0 auto;
+    display: block;
+    border-top: 2px solid grey;
+    border-right: 2px solid grey;
+    border-left: 2px solid grey;
+    position: relative;
+    height: 459px;
+    width: 750px;
+}
+
+    #background {
+        height: 100%;
+        width: auto;
+    }
+
+    #player-position {
+        position: absolute;
+        height: 100px;
+        width: 100px;
+        top: 220px;
+        left: 150px;
+    }
+
+    #enemy-position {
+        position: absolute;
+        height: 100px;
+        width: 100px;
+        top: 220px;
+        right: 150px;
+    }
+
+#hud {
+    margin: auto;
+    display: block;
+    width: 750px;
+    height: auto;
+    position: relative;
+}
+
+    #hud-image {
+        width:750px;
+        height: auto;
+    }
+
+    #left-ui-text {
+        position: absolute;
+        width: 200px;
+        bottom: 80px;
+        left: 50px;
+    }
+
+    #terra-portrait {
+        position: absolute;
+        top: 40px;
+        right:330px;
+    }
+
+    #locke-portrait {
+        position: absolute;
+        top: 40px;
+        right:225px;
+    }
+
+    #cyan-portrait {
+        position: absolute;
+        top: 40px;
+        right:110px;
+    }
+
+    #kefka-portrait {
+        position: absolute;
+        top: 35px;
+        right:25px;
+    }
+
+    #terra-name {
+        position: absolute;
+        bottom: 25px;
+        right: 345px;
+    }
+
+    #locke-name {
+        position: absolute;
+        bottom: 25px;
+        right: 220px;
+    }
+
+    #cyan-name {
+        position: absolute;
+        bottom: 25px;
+        right: 125px;
+    }
+
+    #kefka-name {
+        position: absolute;
+        bottom: 25px;
+        right: 15px;
+    }
+
+
+@media only screen and (max-width: 992px) {
+    #battlefield {
+        margin: 0 auto;
+    }
+}
