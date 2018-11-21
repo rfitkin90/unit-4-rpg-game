@@ -15,6 +15,7 @@ html,body {
     font-size: 40px;
 }
 
+/* battlefield area */
 #battlefield {
     margin: 60px auto 0 auto;
     display: block;
@@ -31,6 +32,7 @@ html,body {
         width: auto;
     }
 
+    /* player positions on battlefield */
     #player-position {
         position: absolute;
         height: 100px;
@@ -47,6 +49,13 @@ html,body {
         right: 150px;
     }
 
+    #enemy-position #kefka-sprite {
+        transform: scaleX(-1);
+        bottom: 20;
+        right: -30;
+    }
+
+/* blue HUD below battlefield */
 #hud {
     margin: auto;
     display: block;
@@ -60,6 +69,7 @@ html,body {
         height: auto;
     }
 
+    /* left side of HUD */
     #left-ui-text {
         position: absolute;
         width: 200px;
@@ -67,52 +77,18 @@ html,body {
         left: 50px;
     }
 
-    #terra-portrait {
+    /* right side of HUD */
+    #character-portraits-div {
+        display: flex;
+        justify-content: center;
         position: absolute;
-        top: 40px;
-        right:330px;
+        right: 10px;
+        bottom: 32px;
+        width: 420px;
     }
 
-    #locke-portrait {
-        position: absolute;
-        top: 40px;
-        right:225px;
-    }
-
-    #cyan-portrait {
-        position: absolute;
-        top: 40px;
-        right:110px;
-    }
-
-    #kefka-portrait {
-        position: absolute;
-        top: 40px;
-        right: 8px;
-    }
-
-    #terra-name {
-        position: absolute;
-        bottom: 25px;
-        right: 345px;
-    }
-
-    #locke-name {
-        position: absolute;
-        bottom: 25px;
-        right: 220px;
-    }
-
-    #cyan-name {
-        position: absolute;
-        bottom: 25px;
-        right: 125px;
-    }
-
-    #kefka-name {
-        position: absolute;
-        bottom: 25px;
-        right: 15px;
+    .individual-portrait-div {
+        text-align: center;
     }
 
 
