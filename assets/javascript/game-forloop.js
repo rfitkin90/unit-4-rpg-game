@@ -55,9 +55,6 @@ $(document).ready(function () {
         $(this).css({ 'cursor': 'pointer' });
     });
 
-    
-
-    // why do we need to use data attributes here? can object properties not be passed into functions through variable array indexes?
     for (var i = 0; i < characterArray.length; i++) {
         $(characterArray[i].portraitID).attr("data-sprite-id", characterArray[i].spriteID);
         $(characterArray[i].portraitID).attr("data-sprite-src", characterArray[i].spriteSrc);
@@ -66,7 +63,6 @@ $(document).ready(function () {
 
                 $(this).css("opacity", "0.5");
 
-                // var sprite = $('<img id = " ' + $(this).attr("data-sprite-id") + '" src = "' + $(this).attr("data-sprite-src") + '">');
                 var sprite = $(`<img id = "${$(this).attr("data-sprite-id")}" src = "${$(this).attr("data-sprite-src")}">`);
 
                 $("#player-position").append(sprite);
@@ -75,13 +71,12 @@ $(document).ready(function () {
                     "position": "absolute",
                     "bottom": 0,
                 });
-
-                // kefka.sprite.css({
-                //     "transform": "scaleX(1)",
-                //     "bottom": -20,
-                //     "left": -30,
-                // });
-                $("#choose-character").text("Choose opponent");
+                $("#kefka-sprite").css({
+                    "transform": "scaleX(1)",
+                    "bottom": -20,
+                    "left": -30,
+                });
+                $("#left-ui-text").text("Choose opponent");
                 playerCharacterSelectPhase = false;
                 enemyCharacterSelectPhase = true;
             } else if (enemyCharacterSelectPhase === true) {
@@ -98,62 +93,3 @@ $(document).ready(function () {
     // else if enemy characters remaining = 0, add "win" message and reset game button
 
 });
-
-/*terra.portrait.click(function () {
-        if (playerCharacterSelectPhase === true) {
-            $(this).css("opacity", "0.5");
-            terra.sprite.appendTo($("#player-position"));
-            terra.sprite.css({
-                "transform": "scaleX(-1)",
-                "position": "absolute",
-                "bottom": 0,
-            });
-            $("#choose-character").text("Choose opponent");
-            playerCharacterSelectPhase = false;
-            enemyCharacterSelectPhase = true;
-        } else if (enemyCharacterSelectPhase === true) {
-
-        }
-    });
-    locke.portrait.click(function () {
-        if (playerCharacterSelectPhase === true) {
-            $(this).css("opacity", "0.5");
-            locke.sprite.appendTo($("#player-position"));
-            locke.sprite.css({
-                "transform": "scaleX(-1)",
-                "position": "absolute",
-                "bottom": 0,
-            });
-            $("#choose-character").text("Choose opponent");
-            playerCharacterSelectPhase = false;
-            enemyCharacterSelectPhase = true;
-        }
-    });
-    cyan.portrait.click(function () {
-        if (playerCharacterSelectPhase === true) {
-            $(this).css("opacity", "0.5");
-            cyan.sprite.appendTo($("#player-position"));
-            cyan.sprite.css({
-                "transform": "scaleX(-1)",
-                "position": "absolute",
-                "bottom": 0,
-            });
-            $("#choose-character").text("Choose opponent");
-            playerCharacterSelectPhase = false;
-            enemyCharacterSelectPhase = true;
-        }
-    });
-    kefka.portrait.click(function () {
-        if (playerCharacterSelectPhase === true) {
-            $(this).css("opacity", "0.5");
-            kefka.sprite.appendTo($("#player-position"));
-            kefka.sprite.css({
-                "position": "absolute",
-                "bottom": -20,
-                "left": -30,
-            });
-            $("#choose-character").text("Choose opponent");
-            playerCharacterSelectPhase = false;
-            enemyCharacterSelectPhase = true;
-        }
-    });*/
