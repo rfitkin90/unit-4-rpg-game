@@ -58,6 +58,13 @@ $(document).ready(function () {
     var playerCharacterSelectPhase = true;
     var enemyCharacterSelectPhase = false;
     var battlePhase = false;
+    var playerAttackPoints = null;
+    var playerHitPoints = null;
+    var enemyCounterAttackPoints = null;
+    var enemyHitPoints = null;
+    var playerSprite = null;
+    var enemySprite = null;
+    var characterSelected = null;
 
 
     $(".portrait").hover(function () {
@@ -70,7 +77,7 @@ $(document).ready(function () {
 
         // directly links the other properties of each object to the corresponding portrait that is clicked
         $(characterArray[i].portraitID).attr("data-attack-points", characterArray[i].attackPoints);
-        $(characterArray[i].portraitID).attr("data-hit-points", characterArray[i].spriteSrc);
+        $(characterArray[i].portraitID).attr("data-hit-points", characterArray[i].hitPoints);
         $(characterArray[i].portraitID).attr("data-counter-attack-points", characterArray[i].counterAttackPoints);
         $(characterArray[i].portraitID).attr("data-selected", characterArray[i].selected);
         $(characterArray[i].portraitID).attr("data-player-character", characterArray[i].playerCharacter);
@@ -89,10 +96,21 @@ $(document).ready(function () {
                 $(this).css("opacity", "0.5");
 
                 // creates the sprite w/ the ID and Src belonging to the same object as the clicked portrait
-                var playerSprite = $(`<img id = "${$(this).attr("data-sprite-id")}" src = "${$(this).attr("data-sprite-src")}">`);
+                playerSprite = $(`<img id = "${$(this).attr("data-sprite-id")}" src = "${$(this).attr("data-sprite-src")}">`);
+
+                playerAttackPoints = $(this).attr("data-attack-points");
+                playerHitPoints = $(this).attr("data-hit-points");
+                characterSelected = $(this).attr("data-selected");
+                this.characterSelected = true;
+                console.log(`Selected value: ${characterSelected}`);
+                console.log(`Selected value: ${terra.selected}`);
 
                 // appends the sprite to player position(on the left)
                 $("#player-position").append(playerSprite);
+
+                // what the heck is this crap
+                    // characterArray[i].selected = true;
+                    // console.log(characterArray[i].selected);
 
                 // gives some css to playerSprite
                 playerSprite.css({
@@ -119,7 +137,10 @@ $(document).ready(function () {
                 // if player has already selected a character
             } else if (enemyCharacterSelectPhase === true) {
 
-                var enemySprite = $(`<img id = "${$(this).attr("data-sprite-id")}" src = "${$(this).attr("data-sprite-src")}">`);
+                enemySprite = $(`<img id = "${$(this).attr("data-sprite-id")}" src = "${$(this).attr("data-sprite-src")}">`);
+
+                enemyCounterAttackPoints = $(this).attr("data-counter-attack-points");
+                enemyHitPoints = $(this).attr("data-hit-points");
 
                 $("#enemy-position").append(enemySprite);
 
@@ -132,10 +153,17 @@ $(document).ready(function () {
                     $(this).css({ 'cursor': 'pointer' });
                 });
                 $("#left-ui-text").text("Click Here to Attack");
+                $("#left-ui-text").addClass("attack-button");
+
+                
 
                 enemyCharacterSelectPhase = false;
                 battlePhase = true;
                 console.log(battlePhase);
+                console.log(`Player attack points: ${playerAttackPoints}`);
+                console.log(`Player hit points: ${playerHitPoints}`);
+                console.log(`Enemy counter-attack points: ${enemyCounterAttackPoints}`);
+                console.log(`Enemy hit points: ${enemyHitPoints}`);
             }
         });
     }
