@@ -6,7 +6,9 @@ $(document).ready(function () {
         hitPoints: 100,
         counterAttackPoints: 4,
         selected: false,
-        dead: false,
+        playerCharacter: false,
+        currentEnemyCharacter: false,
+        defeated: false,
         portraitID: "#terra-portrait",
         spriteSrc: "assets/images/terra-sprite.png",
     };
@@ -16,6 +18,9 @@ $(document).ready(function () {
         hitPoints: 120,
         counterAttackPoints: 8,
         selected: false,
+        playerCharacter: false,
+        currentEnemyCharacter: false,
+        defeated: false,
         portraitID: "#locke-portrait",
         spriteSrc: "assets/images/locke-sprite.png",
         spriteID: "locke-sprite",
@@ -27,6 +32,9 @@ $(document).ready(function () {
         hitPoints: 140,
         counterAttackPoints: 12,
         selected: false,
+        playerCharacter: false,
+        currentEnemyCharacter: false,
+        defeated: false,
         portraitID: "#cyan-portrait",
         spriteSrc: "assets/images/cyan-sprite.png",
         spriteID: "cyan-sprite",
@@ -37,6 +45,9 @@ $(document).ready(function () {
         hitPoints: 160,
         counterAttackPoints: 16,
         selected: false,
+        playerCharacter: false,
+        currentEnemyCharacter: false,
+        defeated: false,
         portraitID: "#kefka-portrait",
         spriteSrc: "assets/images/kefka-sprite.png",
         spriteID: "kefka-sprite",
@@ -57,9 +68,16 @@ $(document).ready(function () {
     // and create battle-sprite images and attack button
     for (var i = 0; i < characterArray.length; i++) {
 
-        // directly links the spriteID/Src of each object to its sibling portraitId
-        $(characterArray[i].portraitID).attr("data-sprite-id", characterArray[i].spriteID);
+        // directly links the other properties of each object to the corresponding portrait that is clicked
+        $(characterArray[i].portraitID).attr("data-attack-points", characterArray[i].attackPoints);
+        $(characterArray[i].portraitID).attr("data-hit-points", characterArray[i].spriteSrc);
+        $(characterArray[i].portraitID).attr("data-counter-attack-points", characterArray[i].counterAttackPoints);
+        $(characterArray[i].portraitID).attr("data-selected", characterArray[i].selected);
+        $(characterArray[i].portraitID).attr("data-player-character", characterArray[i].playerCharacter);
+        $(characterArray[i].portraitID).attr("data-current-enemy-character", characterArray[i].currentEnemyCharacter);
+        $(characterArray[i].portraitID).attr("data-defeated", characterArray[i].defeated);
         $(characterArray[i].portraitID).attr("data-sprite-src", characterArray[i].spriteSrc);
+        $(characterArray[i].portraitID).attr("data-sprite-id", characterArray[i].spriteID);
 
         // when clicking the portrait
         $(characterArray[i].portraitID).click(function () {
@@ -117,6 +135,7 @@ $(document).ready(function () {
 
                 enemyCharacterSelectPhase = false;
                 battlePhase = true;
+                console.log(battlePhase);
             }
         });
     }
