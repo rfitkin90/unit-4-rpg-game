@@ -41,6 +41,12 @@ html,body {
         left: 150px;
     }
 
+        .player-on-screen-hit-points {
+            position: absolute;
+            top: -41px;
+            left: -11px;
+        }
+
     #enemy-position {
         position: absolute;
         height: 100px;
@@ -48,6 +54,12 @@ html,body {
         top: 220px;
         right: 150px;
     }
+
+        .enemy-on-screen-hit-points {
+            position: absolute;
+            top: -44px;
+            left: -13px;
+        }
 
     #enemy-position #kefka-sprite {
         transform: scaleX(-1);
