@@ -66,6 +66,9 @@ $(document).ready(function () {
         $(this).css({ 'cursor': 'pointer' });
     });
 
+    function selectCharacter(chr, pos) {
+
+    };
     // terra onclick
     terra.portrait.click(function () {
 
@@ -384,7 +387,9 @@ $(document).ready(function () {
         // player dies
         if (battlePhase === true && enemyCharacterHitPoints > playerCharacterCurrentAttackPoints && playerCharacterHitPoints <= enemyCharacterCounterAttackPoints) {
 
+            // subtract player current AP from enemy HP-
             enemyCharacterHitPoints -= playerCharacterCurrentAttackPoints;
+            $(".enemy-on-screen-hit-points").text(`HP: ${enemyCharacterHitPoints}`);
 
             // end game
             $("#player-position").empty();
@@ -398,38 +403,7 @@ $(document).ready(function () {
                 $(this).css({ 'cursor': 'pointer' });
             });
             $("#game-end-popup-div").click(function () {
-                $("#player-position").empty();
-                $("#game-end-popup-div").remove();
-                $("#game-end-popup-text").remove();
-                $(".portrait").hover(function () {
-                    $(this).css({ 'cursor': 'pointer' });
-                });
-                $(".portrait").css("opacity", "1");
-                playerCharacterSelectPhase = true;
-                enemyCharacterSelectPhase = false;
-                battlePhase = false;
-                playerCharacterHitPoints = null;
-                playerCharacterInitialAttackPoints = null;
-                playerCharacterCurrentAttackPoints = null;
-                enemyCharacterHitPoints = null;
-                enemyCharacterCounterAttackPoints = null;
-                killCount = 0;
-                terra.hasBeenSelected = false;
-                terra.playerCharacter = false;
-                terra.currentEnemyCharacter = false;
-                terra.defeated = false;
-                locke.hasBeenSelected = false;
-                locke.playerCharacter = false;
-                locke.currentEnemyCharacter = false;
-                locke.defeated = false;
-                cyan.hasBeenSelected = false;
-                cyan.playerCharacter = false;
-                cyan.currentEnemyCharacter = false;
-                cyan.defeated = false;
-                kefka.hasBeenSelected = false;
-                kefka.playerCharacter = false;
-                kefka.currentEnemyCharacter = false;
-                kefka.defeated = false;
+                resetGame();
             });
 
             // non killing-blow
@@ -484,40 +458,51 @@ $(document).ready(function () {
                 $(this).css({ 'cursor': 'pointer' });
             });
             $("#game-end-popup-div").click(function () {
-                $("#player-position").empty();
-                $("#game-end-popup-div").remove();
-                $("#game-end-popup-text").remove();
-                $(".portrait").hover(function () {
-                    $(this).css({ 'cursor': 'pointer' });
-                });
-                $(".portrait").css("opacity", "1");
-                playerCharacterSelectPhase = true;
-                enemyCharacterSelectPhase = false;
-                battlePhase = false;
-                playerCharacterHitPoints = null;
-                playerCharacterInitialAttackPoints = null;
-                playerCharacterCurrentAttackPoints = null;
-                enemyCharacterHitPoints = null;
-                enemyCharacterCounterAttackPoints = null;
-                killCount = 0;
-                terra.hasBeenSelected = false;
-                terra.playerCharacter = false;
-                terra.currentEnemyCharacter = false;
-                terra.defeated = false;
-                locke.hasBeenSelected = false;
-                locke.playerCharacter = false;
-                locke.currentEnemyCharacter = false;
-                locke.defeated = false;
-                cyan.hasBeenSelected = false;
-                cyan.playerCharacter = false;
-                cyan.currentEnemyCharacter = false;
-                cyan.defeated = false;
-                kefka.hasBeenSelected = false;
-                kefka.playerCharacter = false;
-                kefka.currentEnemyCharacter = false;
-                kefka.defeated = false;
+                resetGame();
             });
         }
     });
+
+    // functions
+
+    function resetGame() {
+        $("#player-position").empty();
+        $("#enemy-position").empty();
+        $("#game-end-popup-div").remove();
+        $("#game-end-popup-text").remove();
+        $(".portrait").hover(function () {
+            $(this).css({ 'cursor': 'pointer' });
+        });
+        $(".portrait").css("opacity", "1");
+        $("#left-ui-text").text("Choose your character");
+        $(".portrait").hover(function () {
+            $(this).css({ 'cursor': 'default' });
+        });
+        playerCharacterSelectPhase = true;
+        enemyCharacterSelectPhase = false;
+        battlePhase = false;
+        playerCharacterHitPoints = null;
+        playerCharacterInitialAttackPoints = null;
+        playerCharacterCurrentAttackPoints = null;
+        enemyCharacterHitPoints = null;
+        enemyCharacterCounterAttackPoints = null;
+        killCount = 0;
+        terra.hasBeenSelected = false;
+        terra.playerCharacter = false;
+        terra.currentEnemyCharacter = false;
+        terra.defeated = false;
+        locke.hasBeenSelected = false;
+        locke.playerCharacter = false;
+        locke.currentEnemyCharacter = false;
+        locke.defeated = false;
+        cyan.hasBeenSelected = false;
+        cyan.playerCharacter = false;
+        cyan.currentEnemyCharacter = false;
+        cyan.defeated = false;
+        kefka.hasBeenSelected = false;
+        kefka.playerCharacter = false;
+        kefka.currentEnemyCharacter = false;
+        kefka.defeated = false;
+    };
 
 });
