@@ -58,6 +58,7 @@ $(document).ready(function () {
     var playerCharacterCurrentAttackPoints = null;
     var enemyCharacterHitPoints = null;
     var enemyCharacterCounterAttackPoints = null;
+    var killCount = 0;
 
     // add onclick events to portraits to select player and computer characters and create battle-sprite images and attack button
 
@@ -73,6 +74,9 @@ $(document).ready(function () {
 
             // make portrait transparent
             $(this).css("opacity", "0.5");
+            $(this).hover(function () {
+                $(this).css({ 'cursor': 'default' });
+            });
 
             // append terra's sprite to player position
             terra.sprite.appendTo($("#player-position"));
@@ -108,6 +112,9 @@ $(document).ready(function () {
         } else if (enemyCharacterSelectPhase === true && terra.hasBeenSelected === false) {
 
             $(this).css("opacity", "0.5");
+            $(this).hover(function () {
+                $(this).css({ 'cursor': 'default' });
+            });
 
             terra.sprite.appendTo($("#enemy-position"));
             terra.sprite.css({
@@ -145,6 +152,9 @@ $(document).ready(function () {
         if (playerCharacterSelectPhase === true && locke.hasBeenSelected === false) {
 
             $(this).css("opacity", "0.5");
+            $(this).hover(function () {
+                $(this).css({ 'cursor': 'default' });
+            });
 
             locke.sprite.appendTo($("#player-position"));
             locke.sprite.css({
@@ -174,6 +184,9 @@ $(document).ready(function () {
         } else if (enemyCharacterSelectPhase === true && locke.hasBeenSelected === false) {
 
             $(this).css("opacity", "0.5");
+            $(this).hover(function () {
+                $(this).css({ 'cursor': 'default' });
+            });
 
             locke.sprite.appendTo($("#enemy-position"));
             locke.sprite.css({
@@ -212,6 +225,9 @@ $(document).ready(function () {
         if (playerCharacterSelectPhase === true && cyan.hasBeenSelected === false) {
 
             $(this).css("opacity", "0.5");
+            $(this).hover(function () {
+                $(this).css({ 'cursor': 'default' });
+            });
 
             cyan.sprite.appendTo($("#player-position"));
             cyan.sprite.css({
@@ -241,6 +257,9 @@ $(document).ready(function () {
         } else if (enemyCharacterSelectPhase === true && cyan.hasBeenSelected === false) {
 
             $(this).css("opacity", "0.5");
+            $(this).hover(function () {
+                $(this).css({ 'cursor': 'default' });
+            });
 
             cyan.sprite.appendTo($("#enemy-position"));
             cyan.sprite.css({
@@ -279,6 +298,9 @@ $(document).ready(function () {
         if (playerCharacterSelectPhase === true && kefka.hasBeenSelected === false) {
 
             $(this).css("opacity", "0.5");
+            $(this).hover(function () {
+                $(this).css({ 'cursor': 'default' });
+            });
 
             kefka.sprite.appendTo($("#player-position"));
             kefka.sprite.css({
@@ -313,6 +335,9 @@ $(document).ready(function () {
         } else if (enemyCharacterSelectPhase === true && kefka.hasBeenSelected === false) {
 
             $(this).css("opacity", "0.5");
+            $(this).hover(function () {
+                $(this).css({ 'cursor': 'default' });
+            });
 
             kefka.sprite.appendTo($("#enemy-position"));
             kefka.sprite.css({
@@ -352,8 +377,63 @@ $(document).ready(function () {
 
 
     // add onclick event to attack button to do attack/defense/counter-attack math
+    // if player character hp reaches 0, add "lose" message and reset game button
+    // else if enemy characters remaining = 0, add "win" message and reset game button
     $("#left-ui-text").click(function () {
-        if (battlePhase === true && enemyCharacterHitPoints > playerCharacterCurrentAttackPoints) {
+
+        // player dies
+        if (battlePhase === true && enemyCharacterHitPoints > playerCharacterCurrentAttackPoints && playerCharacterHitPoints <= enemyCharacterCounterAttackPoints) {
+
+            enemyCharacterHitPoints -= playerCharacterCurrentAttackPoints;
+
+            // end game
+            $("#player-position").empty();
+            battlePhase = false;
+            $("#battlefield").append($('<div />').attr('id', 'game-end-popup-div'));
+            $("#game-end-popup-div").append($('<span />').attr('id', 'game-end-popup-text'));
+            $("#game-end-popup-text").text("You lose! Play again?");
+
+            // reset game
+            $("#game-end-popup-div").hover(function () {
+                $(this).css({ 'cursor': 'pointer' });
+            });
+            $("#game-end-popup-div").click(function () {
+                $("#player-position").empty();
+                $("#game-end-popup-div").remove();
+                $("#game-end-popup-text").remove();
+                $(".portrait").hover(function () {
+                    $(this).css({ 'cursor': 'pointer' });
+                });
+                $(".portrait").css("opacity", "1");
+                playerCharacterSelectPhase = true;
+                enemyCharacterSelectPhase = false;
+                battlePhase = false;
+                playerCharacterHitPoints = null;
+                playerCharacterInitialAttackPoints = null;
+                playerCharacterCurrentAttackPoints = null;
+                enemyCharacterHitPoints = null;
+                enemyCharacterCounterAttackPoints = null;
+                killCount = 0;
+                terra.hasBeenSelected = false;
+                terra.playerCharacter = false;
+                terra.currentEnemyCharacter = false;
+                terra.defeated = false;
+                locke.hasBeenSelected = false;
+                locke.playerCharacter = false;
+                locke.currentEnemyCharacter = false;
+                locke.defeated = false;
+                cyan.hasBeenSelected = false;
+                cyan.playerCharacter = false;
+                cyan.currentEnemyCharacter = false;
+                cyan.defeated = false;
+                kefka.hasBeenSelected = false;
+                kefka.playerCharacter = false;
+                kefka.currentEnemyCharacter = false;
+                kefka.defeated = false;
+            });
+
+            // non killing-blow
+        } else if (battlePhase === true && enemyCharacterHitPoints > playerCharacterCurrentAttackPoints) {
 
             // subtract player current AP from enemy HP
             enemyCharacterHitPoints -= playerCharacterCurrentAttackPoints;
@@ -367,13 +447,77 @@ $(document).ready(function () {
             playerCharacterHitPoints -= enemyCharacterCounterAttackPoints;
             $(".player-on-screen-hit-points").text(`HP: ${playerCharacterHitPoints}`);
 
-        } else if (battlePhase === true && playerCharacterCurrentAttackPoints >= enemyCharacterHitPoints) {
+            // killing blow(first 2 enemies)
+        } else if (battlePhase === true && enemyCharacterHitPoints <= playerCharacterCurrentAttackPoints && killCount < 2) {
 
+            // increment kill count
+            killCount++;
+            console.log(`Kill Count: ${killCount}`)
+
+            // buff player AP
+            playerCharacterCurrentAttackPoints += playerCharacterInitialAttackPoints;
+            console.log(`New player AP is: ${playerCharacterCurrentAttackPoints}`);
+
+            // empties enemy-position div
+            $("#enemy-position").empty();
+
+            // go back to enemy select phase
+            $("#left-ui-text").text("Choose opponent");
+            $("#left-ui-text").hover(function () {
+                $(this).css({ 'cursor': 'default' });
+            });
+            battlePhase = false;
+            enemyCharacterSelectPhase = true;
+
+            // killing blow(final enemy)
+        } else if (battlePhase === true && enemyCharacterHitPoints <= playerCharacterCurrentAttackPoints && killCount >= 2) {
+
+            // end game
+            $("#enemy-position").empty();
+            battlePhase = false;
+            $("#battlefield").append($('<div />').attr('id', 'game-end-popup-div'));
+            $("#game-end-popup-div").append($('<span />').attr('id', 'game-end-popup-text'));
+            $("#game-end-popup-text").text("You win! Play again?");
+
+            // reset game
+            $("#game-end-popup-div").hover(function () {
+                $(this).css({ 'cursor': 'pointer' });
+            });
+            $("#game-end-popup-div").click(function () {
+                $("#player-position").empty();
+                $("#game-end-popup-div").remove();
+                $("#game-end-popup-text").remove();
+                $(".portrait").hover(function () {
+                    $(this).css({ 'cursor': 'pointer' });
+                });
+                $(".portrait").css("opacity", "1");
+                playerCharacterSelectPhase = true;
+                enemyCharacterSelectPhase = false;
+                battlePhase = false;
+                playerCharacterHitPoints = null;
+                playerCharacterInitialAttackPoints = null;
+                playerCharacterCurrentAttackPoints = null;
+                enemyCharacterHitPoints = null;
+                enemyCharacterCounterAttackPoints = null;
+                killCount = 0;
+                terra.hasBeenSelected = false;
+                terra.playerCharacter = false;
+                terra.currentEnemyCharacter = false;
+                terra.defeated = false;
+                locke.hasBeenSelected = false;
+                locke.playerCharacter = false;
+                locke.currentEnemyCharacter = false;
+                locke.defeated = false;
+                cyan.hasBeenSelected = false;
+                cyan.playerCharacter = false;
+                cyan.currentEnemyCharacter = false;
+                cyan.defeated = false;
+                kefka.hasBeenSelected = false;
+                kefka.playerCharacter = false;
+                kefka.currentEnemyCharacter = false;
+                kefka.defeated = false;
+            });
         }
     });
-
-    // if player character hp reaches 0, add "lose" message and reset game button
-
-    // else if enemy characters remaining = 0, add "win" message and reset game button
 
 });

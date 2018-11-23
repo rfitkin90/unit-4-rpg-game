@@ -103,6 +103,23 @@ html,body {
         text-align: center;
     }
 
+    #game-end-popup-div {
+        position: absolute;
+        bottom: 135px;
+        left: 228px;
+        height: 143px;
+        width: 285px;
+        background-image: url("../images/game-end-popup.png");
+        background-size: cover;
+    }
+
+    #game-end-popup-text {
+        position: absolute;
+        width: 170px;
+        left: 63px;
+        top: 25px;
+    }
+
 
 @media only screen and (max-width: 992px) {
     #battlefield {
