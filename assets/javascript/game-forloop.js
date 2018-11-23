@@ -53,6 +53,61 @@ $(document).ready(function () {
         spriteID: "kefka-sprite",
     };
 
+    // how to access the properties w/ onclick function in objectception?
+        // var characterArray = {
+        //     terra: {
+        //         attackPoints: 6,
+        //         hitPoints: 100,
+        //         counterAttackPoints: 4,
+        //         selected: false,
+        //         playerCharacter: false,
+        //         currentEnemyCharacter: false,
+        //         defeated: false,
+        //         portraitID: "#terra-portrait",
+        //         spriteSrc: "assets/images/terra-sprite.png",
+        //     },
+
+        //     locke: {
+        //         attackPoints: 8,
+        //         hitPoints: 120,
+        //         counterAttackPoints: 8,
+        //         selected: false,
+        //         playerCharacter: false,
+        //         currentEnemyCharacter: false,
+        //         defeated: false,
+        //         portraitID: "#locke-portrait",
+        //         spriteSrc: "assets/images/locke-sprite.png",
+        //         spriteID: "locke-sprite",
+
+        //     },
+
+        //     cyan: {
+        //         attackPoints: 10,
+        //         hitPoints: 140,
+        //         counterAttackPoints: 12,
+        //         selected: false,
+        //         playerCharacter: false,
+        //         currentEnemyCharacter: false,
+        //         defeated: false,
+        //         portraitID: "#cyan-portrait",
+        //         spriteSrc: "assets/images/cyan-sprite.png",
+        //         spriteID: "cyan-sprite",
+        //     },
+
+        //     kefka: {
+        //         attackPoints: 12,
+        //         hitPoints: 160,
+        //         counterAttackPoints: 16,
+        //         selected: false,
+        //         playerCharacter: false,
+        //         currentEnemyCharacter: false,
+        //         defeated: false,
+        //         portraitID: "#kefka-portrait",
+        //         spriteSrc: "assets/images/kefka-sprite.png",
+        //         spriteID: "kefka-sprite",
+        //     },
+        // };
+
     var characterArray = [terra, locke, cyan, kefka];
 
     var playerCharacterSelectPhase = true;
@@ -100,10 +155,22 @@ $(document).ready(function () {
 
                 playerAttackPoints = $(this).attr("data-attack-points");
                 playerHitPoints = $(this).attr("data-hit-points");
-                characterSelected = $(this).attr("data-selected");
-                this.characterSelected = true;
-                console.log(`Selected value: ${characterSelected}`);
-                console.log(`Selected value: ${terra.selected}`);
+
+                if (characterArray[i].portraitID === $("#terra-portrait")) {
+                    terra.selected = true;
+                } else if (i === 1) {
+                    locke.selected = true;
+                } else if (i === 2) {
+                    cyan.selected = true;
+                } else if (i === 3) {
+                    kefka.selected = true;
+                }
+
+                console.log(`Terra selected: ${terra.selected}`);
+                console.log(`Locke selected: ${locke.selected}`);
+                console.log(`Cyan selected: ${cyan.selected}`);
+                console.log(`Kefka selected: ${kefka.selected}`);
+           
 
                 // appends the sprite to player position(on the left)
                 $("#player-position").append(playerSprite);
@@ -159,7 +226,7 @@ $(document).ready(function () {
 
                 enemyCharacterSelectPhase = false;
                 battlePhase = true;
-                console.log(battlePhase);
+                console.log(`Battle phase: ${battlePhase}`);
                 console.log(`Player attack points: ${playerAttackPoints}`);
                 console.log(`Player hit points: ${playerHitPoints}`);
                 console.log(`Enemy counter-attack points: ${enemyCounterAttackPoints}`);

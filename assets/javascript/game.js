@@ -5,8 +5,9 @@ $(document).ready(function () {
         attackPoints: 6,
         hitPoints: 100,
         counterAttackPoints: 4,
-        playerSelection: false,
-        currentEnemySelection: false,
+        hasBeenSelected: false,
+        playerCharacter: false,
+        currentEnemyCharacter: false,
         defeated: false,
         portrait: $("#terra-portrait"),
         sprite: $('<img id="terra-sprite" src="assets/images/terra-sprite.png">'),
@@ -16,8 +17,9 @@ $(document).ready(function () {
         attackPoints: 8,
         hitPoints: 120,
         counterAttackPoints: 8,
-        playerSelection: false,
-        currentEnemySelection: false,
+        hasBeenSelected: false,
+        playerCharacter: false,
+        currentEnemyCharacter: false,
         defeated: false,
         portrait: $("#locke-portrait"),
         sprite: $('<img id="locke-sprite" src="assets/images/locke-sprite.png">'),
@@ -27,8 +29,9 @@ $(document).ready(function () {
         attackPoints: 10,
         hitPoints: 140,
         counterAttackPoints: 12,
-        playerSelection: false,
-        currentEnemySelection: false,
+        hasBeenSelected: false,
+        playerCharacter: false,
+        currentEnemyCharacter: false,
         defeated: false,
         portrait: $("#cyan-portrait"),
         sprite: $('<img id="cyan-sprite" src="assets/images/cyan-sprite.png">'),
@@ -38,20 +41,24 @@ $(document).ready(function () {
         attackPoints: 12,
         hitPoints: 160,
         counterAttackPoints: 16,
-        playerSelection: false,
-        currentEnemySelection: false,
+        hasBeenSelected: false,
+        playerCharacter: false,
+        currentEnemyCharacter: false,
         defeated: false,
         portrait: $("#kefka-portrait"),
         sprite: $('<img id="kefka-sprite" src="assets/images/kefka-sprite.png">'),
     };
 
-    var characterArray = [terra, locke, cyan, kefka];
 
     var playerCharacterSelectPhase = true;
     var enemyCharacterSelectPhase = false;
     var battlePhase = false;
+    var playerCharacterHitPoints = null;
+    var playerCharacterCurrentAttackPoints = null;
+    var enemyCharacterHitPoints = null;
+    var enemyCharacterCounterAttackPoints = null;
 
-    // add onclick event to portraits to select player and computer characters and create battle-sprite images and attack button
+    // add onclick events to portraits to select player and computer characters and create battle-sprite images and attack button
 
     $(".portrait").hover(function () {
         $(this).css({ 'cursor': 'pointer' });
@@ -67,19 +74,28 @@ $(document).ready(function () {
                 "bottom": 0,
             });
             $("#left-ui-text").text("Choose opponent");
+            terra.hasBeenSelected = true;
+            terra.playerCharacter = true;
             playerCharacterSelectPhase = false;
             enemyCharacterSelectPhase = true;
         } else if (enemyCharacterSelectPhase === true) {
+            $(this).css("opacity", "0.5");
             terra.sprite.appendTo($("#enemy-position"));
             terra.sprite.css({
                 "position": "absolute",
                 "bottom": 0,
             });
-            $("#left-ui-text").text("Attack");
+            $("#left-ui-text").text("Click to Attack");
+            $("#left-ui-text").hover(function () {
+                $(this).css({ 'cursor': 'pointer' });
+            });
+            terra.hasBeenSelected = true;
+            terra.currentEnemyCharacter = true;
             enemyCharacterSelectPhase = false;
             battlePhase = true;
         }
     });
+
     locke.portrait.click(function () {
         if (playerCharacterSelectPhase === true) {
             $(this).css("opacity", "0.5");
@@ -93,16 +109,21 @@ $(document).ready(function () {
             playerCharacterSelectPhase = false;
             enemyCharacterSelectPhase = true;
         } else if (enemyCharacterSelectPhase === true) {
+            $(this).css("opacity", "0.5");
             locke.sprite.appendTo($("#enemy-position"));
             locke.sprite.css({
                 "position": "absolute",
                 "bottom": 0,
             });
-            $("#left-ui-text").text("Attack");
+            $("#left-ui-text").text("Click to Attack");
+            $("#left-ui-text").hover(function () {
+                $(this).css({ 'cursor': 'pointer' });
+            });
             enemyCharacterSelectPhase = false;
             battlePhase = true;
         }
     });
+
     cyan.portrait.click(function () {
         if (playerCharacterSelectPhase === true) {
             $(this).css("opacity", "0.5");
@@ -116,16 +137,21 @@ $(document).ready(function () {
             playerCharacterSelectPhase = false;
             enemyCharacterSelectPhase = true;
         } else if (enemyCharacterSelectPhase === true) {
+            $(this).css("opacity", "0.5");
             cyan.sprite.appendTo($("#enemy-position"));
             cyan.sprite.css({
                 "position": "absolute",
                 "bottom": 0,
             });
-            $("#left-ui-text").text("Attack");
+            $("#left-ui-text").text("Click to Attack");
+            $("#left-ui-text").hover(function () {
+                $(this).css({ 'cursor': 'pointer' });
+            });
             enemyCharacterSelectPhase = false;
             battlePhase = true;
         }
     });
+
     kefka.portrait.click(function () {
         if (playerCharacterSelectPhase === true) {
             $(this).css("opacity", "0.5");
@@ -139,6 +165,7 @@ $(document).ready(function () {
             playerCharacterSelectPhase = false;
             enemyCharacterSelectPhase = true;
         } else if (enemyCharacterSelectPhase === true) {
+            $(this).css("opacity", "0.5");
             kefka.sprite.appendTo($("#enemy-position"));
             kefka.sprite.css({
                 "transform": "scaleX(-1)",
@@ -146,7 +173,10 @@ $(document).ready(function () {
                 "bottom": -20,
                 "right": -30,
             });
-            $("#left-ui-text").text("Attack");
+            $("#left-ui-text").text("Click to Attack");
+            $("#left-ui-text").hover(function () {
+                $(this).css({ 'cursor': 'pointer' });
+            });
             enemyCharacterSelectPhase = false;
             battlePhase = true;
         }
