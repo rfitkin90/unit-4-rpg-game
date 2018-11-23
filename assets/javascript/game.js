@@ -54,6 +54,7 @@ $(document).ready(function () {
     var enemyCharacterSelectPhase = false;
     var battlePhase = false;
     var playerCharacterHitPoints = null;
+    var playerCharacterInitialAttackPoints = null;
     var playerCharacterCurrentAttackPoints = null;
     var enemyCharacterHitPoints = null;
     var enemyCharacterCounterAttackPoints = null;
@@ -80,7 +81,7 @@ $(document).ready(function () {
                 "position": "absolute",
                 "bottom": 0,
             });
-            
+
             // change hud text
             $("#left-ui-text").text("Choose opponent");
 
@@ -89,6 +90,7 @@ $(document).ready(function () {
 
             // set terra's stats to playerCharacter variables
             playerCharacterHitPoints = terra.hitPoints;
+            playerCharacterInitialAttackPoints = terra.attackPoints;
             playerCharacterCurrentAttackPoints = terra.attackPoints;
 
             // put hp stats on screen
@@ -137,6 +139,7 @@ $(document).ready(function () {
 
     });
 
+    // locke onclick
     locke.portrait.click(function () {
 
         if (playerCharacterSelectPhase === true && locke.hasBeenSelected === false) {
@@ -156,6 +159,7 @@ $(document).ready(function () {
             locke.playerCharacter = true;
 
             playerCharacterHitPoints = locke.hitPoints;
+            playerCharacterInitialAttackPoints = locke.attackPoints;
             playerCharacterCurrentAttackPoints = locke.attackPoints;
 
             var playerOnScreenHitPoints = $('<span />', {
@@ -202,6 +206,7 @@ $(document).ready(function () {
 
     });
 
+    // cyan onclick
     cyan.portrait.click(function () {
 
         if (playerCharacterSelectPhase === true && cyan.hasBeenSelected === false) {
@@ -221,6 +226,7 @@ $(document).ready(function () {
             cyan.playerCharacter = true;
 
             playerCharacterHitPoints = cyan.hitPoints;
+            playerCharacterInitialAttackPoints = cyan.attackPoints;
             playerCharacterCurrentAttackPoints = cyan.attackPoints;
 
             var playerOnScreenHitPoints = $('<span />', {
@@ -228,7 +234,7 @@ $(document).ready(function () {
                 text: `HP: ${playerCharacterHitPoints}`,
             });
             $("#player-position").append(playerOnScreenHitPoints);
-            
+
             playerCharacterSelectPhase = false;
             enemyCharacterSelectPhase = true;
 
@@ -267,6 +273,7 @@ $(document).ready(function () {
 
     });
 
+    // kefka onclick
     kefka.portrait.click(function () {
 
         if (playerCharacterSelectPhase === true && kefka.hasBeenSelected === false) {
@@ -286,6 +293,7 @@ $(document).ready(function () {
             kefka.playerCharacter = true;
 
             playerCharacterHitPoints = kefka.hitPoints;
+            playerCharacterInitialAttackPoints = kefka.attackPoints;
             playerCharacterCurrentAttackPoints = kefka.attackPoints;
 
             var playerOnScreenHitPoints = $('<span />', {
@@ -293,7 +301,12 @@ $(document).ready(function () {
                 text: `HP: ${playerCharacterHitPoints}`,
             });
             $("#player-position").append(playerOnScreenHitPoints);
-            
+            playerOnScreenHitPoints.css({
+                "top": `${-113}px`,
+                "left": `${7}px`,
+                "width": `${120}px`,
+            });
+
             playerCharacterSelectPhase = false;
             enemyCharacterSelectPhase = true;
 
@@ -326,17 +339,38 @@ $(document).ready(function () {
                 text: `HP: ${enemyCharacterHitPoints}`,
             });
             $("#enemy-position").append(enemyOnScreenHitPoints);
+            enemyOnScreenHitPoints.css({
+                "top": `${-111}px`,
+            });
 
             enemyCharacterSelectPhase = false;
             battlePhase = true;
-            
+
         }
 
     });
 
 
-
     // add onclick event to attack button to do attack/defense/counter-attack math
+    $("#left-ui-text").click(function () {
+        if (battlePhase === true && enemyCharacterHitPoints > playerCharacterCurrentAttackPoints) {
+
+            // subtract player current AP from enemy HP
+            enemyCharacterHitPoints -= playerCharacterCurrentAttackPoints;
+            $(".enemy-on-screen-hit-points").text(`HP: ${enemyCharacterHitPoints}`);
+
+            // buff player AP
+            playerCharacterCurrentAttackPoints += playerCharacterInitialAttackPoints;
+            console.log(`New player AP is: ${playerCharacterCurrentAttackPoints}`);
+
+            // subtract enemy's counter AP from player HP
+            playerCharacterHitPoints -= enemyCharacterCounterAttackPoints;
+            $(".player-on-screen-hit-points").text(`HP: ${playerCharacterHitPoints}`);
+
+        } else if (battlePhase === true && playerCharacterCurrentAttackPoints >= enemyCharacterHitPoints) {
+
+        }
+    });
 
     // if player character hp reaches 0, add "lose" message and reset game button
 
