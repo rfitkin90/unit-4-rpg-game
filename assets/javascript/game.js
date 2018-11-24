@@ -60,322 +60,40 @@ $(document).ready(function () {
     var enemyCharacterCounterAttackPoints = null;
     var killCount = 0;
 
+    var decisiveBattle = document.createElement("audio");
+    decisiveBattle.setAttribute("src", "./assets/music/decisive-battle.mp3");
+    decisiveBattle.loop = true;
+    var fanfare = document.createElement("audio");
+    fanfare.setAttribute("src", "./assets/music/fanfare.mp3");
+    decisiveBattle.loop = true;
+    var restInPeace = document.createElement("audio");
+    restInPeace.setAttribute("src", "./assets/music/rest-in-peace.mp3");
+    decisiveBattle.loop = true;
+
     // add onclick events to portraits to select player and computer characters and create battle-sprite images and attack button
 
     $(".portrait").hover(function () {
         $(this).css({ 'cursor': 'pointer' });
     });
 
-    function selectCharacter(chr, pos) {
-
-    };
     // terra onclick
     terra.portrait.click(function () {
-
-        // if we're in player select phase and terra hasn't been selected already
-        if (playerCharacterSelectPhase === true && terra.hasBeenSelected === false) {
-
-            // make portrait transparent
-            $(this).css("opacity", "0.5");
-            $(this).hover(function () {
-                $(this).css({ 'cursor': 'default' });
-            });
-
-            // append terra's sprite to player position
-            terra.sprite.appendTo($("#player-position"));
-            terra.sprite.css({
-                "transform": "scaleX(-1)",
-                "position": "absolute",
-                "bottom": 0,
-            });
-
-            // change hud text
-            $("#left-ui-text").text("Choose opponent");
-
-            terra.hasBeenSelected = true;
-            terra.playerCharacter = true;
-
-            // set terra's stats to playerCharacter variables
-            playerCharacterHitPoints = terra.hitPoints;
-            playerCharacterInitialAttackPoints = terra.attackPoints;
-            playerCharacterCurrentAttackPoints = terra.attackPoints;
-
-            // put hp stats on screen
-            var playerOnScreenHitPoints = $('<span />', {
-                "class": 'player-on-screen-hit-points',
-                text: `HP: ${playerCharacterHitPoints}`,
-            });
-            $("#player-position").append(playerOnScreenHitPoints);
-
-            // transition to next phase
-            playerCharacterSelectPhase = false;
-            enemyCharacterSelectPhase = true;
-
-            // if we're in enemy select phase and terra hasn't been selected already
-        } else if (enemyCharacterSelectPhase === true && terra.hasBeenSelected === false) {
-
-            $(this).css("opacity", "0.5");
-            $(this).hover(function () {
-                $(this).css({ 'cursor': 'default' });
-            });
-
-            terra.sprite.appendTo($("#enemy-position"));
-            terra.sprite.css({
-                "position": "absolute",
-                "bottom": 0,
-            });
-
-            $("#left-ui-text").text("Click to Attack");
-            $("#left-ui-text").hover(function () {
-                $(this).css({ 'cursor': 'pointer' });
-            });
-            $("#left-ui-text").addClass("attack-button");
-
-            terra.hasBeenSelected = true;
-            terra.currentEnemyCharacter = true;
-
-            enemyCharacterHitPoints = terra.hitPoints;
-            enemyCharacterCounterAttackPoints = terra.counterAttackPoints;
-
-            var enemyOnScreenHitPoints = $('<span />', {
-                "class": 'enemy-on-screen-hit-points',
-                text: `HP: ${enemyCharacterHitPoints}`,
-            });
-            $("#enemy-position").append(enemyOnScreenHitPoints);
-
-            enemyCharacterSelectPhase = false;
-            battlePhase = true;
-        }
-
+        selectCharacter(terra);
     });
 
     // locke onclick
     locke.portrait.click(function () {
-
-        if (playerCharacterSelectPhase === true && locke.hasBeenSelected === false) {
-
-            $(this).css("opacity", "0.5");
-            $(this).hover(function () {
-                $(this).css({ 'cursor': 'default' });
-            });
-
-            locke.sprite.appendTo($("#player-position"));
-            locke.sprite.css({
-                "transform": "scaleX(-1)",
-                "position": "absolute",
-                "bottom": 0,
-            });
-
-            $("#left-ui-text").text("Choose opponent");
-
-            locke.hasBeenSelected = true;
-            locke.playerCharacter = true;
-
-            playerCharacterHitPoints = locke.hitPoints;
-            playerCharacterInitialAttackPoints = locke.attackPoints;
-            playerCharacterCurrentAttackPoints = locke.attackPoints;
-
-            var playerOnScreenHitPoints = $('<span />', {
-                "class": 'player-on-screen-hit-points',
-                text: `HP: ${playerCharacterHitPoints}`,
-            });
-            $("#player-position").append(playerOnScreenHitPoints);
-
-            playerCharacterSelectPhase = false;
-            enemyCharacterSelectPhase = true;
-
-        } else if (enemyCharacterSelectPhase === true && locke.hasBeenSelected === false) {
-
-            $(this).css("opacity", "0.5");
-            $(this).hover(function () {
-                $(this).css({ 'cursor': 'default' });
-            });
-
-            locke.sprite.appendTo($("#enemy-position"));
-            locke.sprite.css({
-                "position": "absolute",
-                "bottom": 0,
-            });
-
-            $("#left-ui-text").text("Click to Attack");
-            $("#left-ui-text").hover(function () {
-                $(this).css({ 'cursor': 'pointer' });
-            });
-            $("#left-ui-text").addClass("attack-button");
-
-            locke.hasBeenSelected = true;
-            locke.currentEnemyCharacter = true;
-
-            enemyCharacterHitPoints = locke.hitPoints;
-            enemyCharacterCounterAttackPoints = locke.counterAttackPoints;
-
-            var enemyOnScreenHitPoints = $('<span />', {
-                "class": 'enemy-on-screen-hit-points',
-                text: `HP: ${enemyCharacterHitPoints}`,
-            });
-            $("#enemy-position").append(enemyOnScreenHitPoints);
-
-            enemyCharacterSelectPhase = false;
-            battlePhase = true;
-
-        }
-
+        selectCharacter(locke);
     });
 
     // cyan onclick
     cyan.portrait.click(function () {
-
-        if (playerCharacterSelectPhase === true && cyan.hasBeenSelected === false) {
-
-            $(this).css("opacity", "0.5");
-            $(this).hover(function () {
-                $(this).css({ 'cursor': 'default' });
-            });
-
-            cyan.sprite.appendTo($("#player-position"));
-            cyan.sprite.css({
-                "transform": "scaleX(-1)",
-                "position": "absolute",
-                "bottom": 0,
-            });
-
-            $("#left-ui-text").text("Choose opponent");
-
-            cyan.hasBeenSelected = true;
-            cyan.playerCharacter = true;
-
-            playerCharacterHitPoints = cyan.hitPoints;
-            playerCharacterInitialAttackPoints = cyan.attackPoints;
-            playerCharacterCurrentAttackPoints = cyan.attackPoints;
-
-            var playerOnScreenHitPoints = $('<span />', {
-                "class": 'player-on-screen-hit-points',
-                text: `HP: ${playerCharacterHitPoints}`,
-            });
-            $("#player-position").append(playerOnScreenHitPoints);
-
-            playerCharacterSelectPhase = false;
-            enemyCharacterSelectPhase = true;
-
-        } else if (enemyCharacterSelectPhase === true && cyan.hasBeenSelected === false) {
-
-            $(this).css("opacity", "0.5");
-            $(this).hover(function () {
-                $(this).css({ 'cursor': 'default' });
-            });
-
-            cyan.sprite.appendTo($("#enemy-position"));
-            cyan.sprite.css({
-                "position": "absolute",
-                "bottom": 0,
-            });
-
-            $("#left-ui-text").text("Click to Attack");
-            $("#left-ui-text").hover(function () {
-                $(this).css({ 'cursor': 'pointer' });
-            });
-            $("#left-ui-text").addClass("attack-button");
-
-            cyan.hasBeenSelected = true;
-            cyan.currentEnemyCharacter = true;
-
-            enemyCharacterHitPoints = cyan.hitPoints;
-            enemyCharacterCounterAttackPoints = cyan.counterAttackPoints;
-
-            var enemyOnScreenHitPoints = $('<span />', {
-                "class": 'enemy-on-screen-hit-points',
-                text: `HP: ${enemyCharacterHitPoints}`,
-            });
-            $("#enemy-position").append(enemyOnScreenHitPoints);
-
-            enemyCharacterSelectPhase = false;
-            battlePhase = true;
-
-        }
-
+        selectCharacter(cyan);
     });
 
     // kefka onclick
     kefka.portrait.click(function () {
-
-        if (playerCharacterSelectPhase === true && kefka.hasBeenSelected === false) {
-
-            $(this).css("opacity", "0.5");
-            $(this).hover(function () {
-                $(this).css({ 'cursor': 'default' });
-            });
-
-            kefka.sprite.appendTo($("#player-position"));
-            kefka.sprite.css({
-                "position": "absolute",
-                "bottom": -20,
-                "left": -30,
-            });
-
-            $("#left-ui-text").text("Choose opponent");
-
-            kefka.hasBeenSelected = true;
-            kefka.playerCharacter = true;
-
-            playerCharacterHitPoints = kefka.hitPoints;
-            playerCharacterInitialAttackPoints = kefka.attackPoints;
-            playerCharacterCurrentAttackPoints = kefka.attackPoints;
-
-            var playerOnScreenHitPoints = $('<span />', {
-                "class": 'player-on-screen-hit-points',
-                text: `HP: ${playerCharacterHitPoints}`,
-            });
-            $("#player-position").append(playerOnScreenHitPoints);
-            playerOnScreenHitPoints.css({
-                "top": `${-113}px`,
-                "left": `${7}px`,
-                "width": `${120}px`,
-            });
-
-            playerCharacterSelectPhase = false;
-            enemyCharacterSelectPhase = true;
-
-        } else if (enemyCharacterSelectPhase === true && kefka.hasBeenSelected === false) {
-
-            $(this).css("opacity", "0.5");
-            $(this).hover(function () {
-                $(this).css({ 'cursor': 'default' });
-            });
-
-            kefka.sprite.appendTo($("#enemy-position"));
-            kefka.sprite.css({
-                "transform": "scaleX(-1)",
-                "position": "absolute",
-                "bottom": -20,
-                "right": -30,
-            });
-
-            $("#left-ui-text").text("Click to Attack");
-            $("#left-ui-text").hover(function () {
-                $(this).css({ 'cursor': 'pointer' });
-            });
-            $("#left-ui-text").addClass("attack-button");
-
-            kefka.hasBeenSelected = true;
-            kefka.currentEnemyCharacter = true;
-
-            enemyCharacterHitPoints = kefka.hitPoints;
-            enemyCharacterCounterAttackPoints = kefka.counterAttackPoints;
-
-            var enemyOnScreenHitPoints = $('<span />', {
-                "class": 'enemy-on-screen-hit-points',
-                text: `HP: ${enemyCharacterHitPoints}`,
-            });
-            $("#enemy-position").append(enemyOnScreenHitPoints);
-            enemyOnScreenHitPoints.css({
-                "top": `${-111}px`,
-            });
-
-            enemyCharacterSelectPhase = false;
-            battlePhase = true;
-
-        }
-
+        selectCharacter(kefka);
     });
 
 
@@ -384,8 +102,13 @@ $(document).ready(function () {
     // else if enemy characters remaining = 0, add "win" message and reset game button
     $("#left-ui-text").click(function () {
 
-        // player dies
+        // if player dies
         if (battlePhase === true && enemyCharacterHitPoints > playerCharacterCurrentAttackPoints && playerCharacterHitPoints <= enemyCharacterCounterAttackPoints) {
+
+            // play game over music
+            decisiveBattle.pause();
+            decisiveBattle.currentTime = 0;
+            restInPeace.play();
 
             // subtract player current AP from enemy HP-
             enemyCharacterHitPoints -= playerCharacterCurrentAttackPoints;
@@ -446,12 +169,19 @@ $(document).ready(function () {
             // killing blow(final enemy)
         } else if (battlePhase === true && enemyCharacterHitPoints <= playerCharacterCurrentAttackPoints && killCount >= 2) {
 
+            // play victory fanfare
+            decisiveBattle.pause();
+            decisiveBattle.currentTime = 0;
+            fanfare.play();
+
             // end game
             $("#enemy-position").empty();
             battlePhase = false;
             $("#battlefield").append($('<div />').attr('id', 'game-end-popup-div'));
             $("#game-end-popup-div").append($('<span />').attr('id', 'game-end-popup-text'));
             $("#game-end-popup-text").text("You win! Play again?");
+
+            decisiveBattle.pause();
 
             // reset game
             $("#game-end-popup-div").hover(function () {
@@ -463,11 +193,125 @@ $(document).ready(function () {
         }
     });
 
-    // functions
+    /************************************ functions ************************************/
+
+    function selectCharacter(chr) {
+        // if we're in player select phase and terra hasn't been selected already
+        if (playerCharacterSelectPhase === true && chr.hasBeenSelected === false) {
+
+            // make portrait transparent
+            $(chr.portrait).css("opacity", "0.5");
+            $(chr.portrait).hover(function () {
+                $(chr.portrait).css({ 'cursor': 'default' });
+            });
+
+            // append terra's sprite to player position
+            chr.sprite.appendTo($("#player-position"));
+            if (chr === kefka) {
+                chr.sprite.css({
+                    "position": "absolute",
+                    "bottom": -20,
+                    "left": -30,
+                });
+            } else {
+                chr.sprite.css({
+                    "transform": "scaleX(-1)",
+                    "position": "absolute",
+                    "bottom": 0,
+                });
+            };
+
+            // change hud text
+            $("#left-ui-text").text("Choose opponent");
+
+            chr.hasBeenSelected = true;
+            chr.playerCharacter = true;
+
+            // set chr's stats to playerCharacter variables
+            playerCharacterHitPoints = chr.hitPoints;
+            playerCharacterInitialAttackPoints = chr.attackPoints;
+            playerCharacterCurrentAttackPoints = chr.attackPoints;
+
+            // put hp stats on screen
+            var playerOnScreenHitPoints = $('<span />', {
+                "class": 'player-on-screen-hit-points',
+                text: `HP: ${playerCharacterHitPoints}`,
+            });
+            $("#player-position").append(playerOnScreenHitPoints);
+            if (chr === kefka) {
+                playerOnScreenHitPoints.css({
+                    "top": `${-113}px`,
+                    "left": `${7}px`,
+                    "width": `${120}px`,
+                });
+            };
+
+            // transition to next phase
+            playerCharacterSelectPhase = false;
+            enemyCharacterSelectPhase = true;
+
+            // if we're in enemy select phase and chr hasn't been selected already
+        } else if (enemyCharacterSelectPhase === true && chr.hasBeenSelected === false) {
+
+            // play battle music
+            if (killCount === 0) {
+                decisiveBattle.play();
+            }
+
+            $(chr.portrait).css("opacity", "0.5");
+            $(chr.portrait).hover(function () {
+                $(chr.portrait).css({ 'cursor': 'default' });
+            });
+
+            chr.sprite.appendTo($("#enemy-position"));
+            if (chr === kefka) {
+                chr.sprite.css({
+                    "transform": "scaleX(-1)",
+                    "position": "absolute",
+                    "bottom": -20,
+                    "right": -30,
+                });
+            } else {
+                chr.sprite.css({
+                    "position": "absolute",
+                    "bottom": 0,
+                });
+            };
+
+            $("#left-ui-text").text("Click to Attack");
+            $("#left-ui-text").hover(function () {
+                $(this).css({ 'cursor': 'pointer' });
+            });
+            $("#left-ui-text").addClass("attack-button");
+
+            chr.hasBeenSelected = true;
+            chr.currentEnemyCharacter = true;
+
+            enemyCharacterHitPoints = chr.hitPoints;
+            enemyCharacterCounterAttackPoints = chr.counterAttackPoints;
+
+            var enemyOnScreenHitPoints = $('<span />', {
+                "class": 'enemy-on-screen-hit-points',
+                text: `HP: ${enemyCharacterHitPoints}`,
+            });
+            $("#enemy-position").append(enemyOnScreenHitPoints);
+            if (chr === kefka) {
+                enemyOnScreenHitPoints.css({
+                    "top": `${-111}px`,
+                    // "left": `${31}px`,
+                    "width": `${110}px`,
+                });
+            };
+
+            enemyCharacterSelectPhase = false;
+            battlePhase = true;
+        }
+    };
 
     function resetGame() {
         $("#player-position").empty();
         $("#enemy-position").empty();
+        // playerOnScreenHitPoints.removeAttr('style');
         $("#game-end-popup-div").remove();
         $("#game-end-popup-text").remove();
         $(".portrait").hover(function () {
@@ -475,7 +319,7 @@ $(document).ready(function () {
         });
         $(".portrait").css("opacity", "1");
         $("#left-ui-text").text("Choose your character");
-        $(".portrait").hover(function () {
+        $("#left-ui-text").hover(function () {
             $(this).css({ 'cursor': 'default' });
         });
         playerCharacterSelectPhase = true;
@@ -487,22 +331,22 @@ $(document).ready(function () {
         enemyCharacterHitPoints = null;
         enemyCharacterCounterAttackPoints = null;
         killCount = 0;
-        terra.hasBeenSelected = false;
-        terra.playerCharacter = false;
-        terra.currentEnemyCharacter = false;
-        terra.defeated = false;
-        locke.hasBeenSelected = false;
-        locke.playerCharacter = false;
-        locke.currentEnemyCharacter = false;
-        locke.defeated = false;
-        cyan.hasBeenSelected = false;
-        cyan.playerCharacter = false;
-        cyan.currentEnemyCharacter = false;
-        cyan.defeated = false;
-        kefka.hasBeenSelected = false;
-        kefka.playerCharacter = false;
-        kefka.currentEnemyCharacter = false;
-        kefka.defeated = false;
+        resetCharacter(terra);
+        resetCharacter(locke);
+        resetCharacter(cyan);
+        resetCharacter(kefka);
+        fanfare.pause();
+        fanfare.currentTime = 0;
+        restInPeace.pause();
+        restInPeace.currentTime = 0;
+    };
+
+    function resetCharacter(chr) {
+        chr.hasBeenSelected = false;
+        chr.playerCharacter = false;
+        chr.currentEnemyCharacter = false;
+        chr.defeated = false;
+        chr.sprite.removeAttr('style');
     };
 
 });
