@@ -2,49 +2,37 @@
 $(document).ready(function () {
     // assign attack, defense, and counter-attack points to each character
     var terra = {
-        attackPoints: 6,
+        attackPoints: 10,
         hitPoints: 100,
-        counterAttackPoints: 4,
+        counterAttackPoints: 24,
         hasBeenSelected: false,
-        playerCharacter: false,
-        currentEnemyCharacter: false,
-        defeated: false,
         portrait: $("#terra-portrait"),
         sprite: $('<img id="terra-sprite" src="assets/images/terra-sprite.png">'),
     };
 
     var locke = {
-        attackPoints: 8,
-        hitPoints: 120,
-        counterAttackPoints: 8,
+        attackPoints: 12,
+        hitPoints: 104,
+        counterAttackPoints: 18,
         hasBeenSelected: false,
-        playerCharacter: false,
-        currentEnemyCharacter: false,
-        defeated: false,
         portrait: $("#locke-portrait"),
         sprite: $('<img id="locke-sprite" src="assets/images/locke-sprite.png">'),
     };
 
     var cyan = {
         attackPoints: 10,
-        hitPoints: 140,
-        counterAttackPoints: 12,
+        hitPoints: 110,
+        counterAttackPoints: 16,
         hasBeenSelected: false,
-        playerCharacter: false,
-        currentEnemyCharacter: false,
-        defeated: false,
         portrait: $("#cyan-portrait"),
         sprite: $('<img id="cyan-sprite" src="assets/images/cyan-sprite.png">'),
     };
 
     var kefka = {
-        attackPoints: 12,
-        hitPoints: 160,
+        attackPoints: 9,
+        hitPoints: 116,
         counterAttackPoints: 16,
         hasBeenSelected: false,
-        playerCharacter: false,
-        currentEnemyCharacter: false,
-        defeated: false,
         portrait: $("#kefka-portrait"),
         sprite: $('<img id="kefka-sprite" src="assets/images/kefka-sprite.png">'),
     };
@@ -60,38 +48,28 @@ $(document).ready(function () {
     var enemyCharacterCounterAttackPoints = null;
     var killCount = 0;
 
+    // create auto elements
     var decisiveBattle = document.createElement("audio");
     decisiveBattle.setAttribute("src", "./assets/music/decisive-battle.mp3");
     decisiveBattle.loop = true;
     var fanfare = document.createElement("audio");
     fanfare.setAttribute("src", "./assets/music/fanfare.mp3");
-    decisiveBattle.loop = true;
     var restInPeace = document.createElement("audio");
     restInPeace.setAttribute("src", "./assets/music/rest-in-peace.mp3");
-    decisiveBattle.loop = true;
 
     // add onclick events to portraits to select player and computer characters and create battle-sprite images and attack button
-
     $(".portrait").hover(function () {
         $(this).css({ 'cursor': 'pointer' });
     });
-
-    // terra onclick
     terra.portrait.click(function () {
         selectCharacter(terra);
     });
-
-    // locke onclick
     locke.portrait.click(function () {
         selectCharacter(locke);
     });
-
-    // cyan onclick
     cyan.portrait.click(function () {
         selectCharacter(cyan);
     });
-
-    // kefka onclick
     kefka.portrait.click(function () {
         selectCharacter(kefka);
     });
@@ -225,7 +203,6 @@ $(document).ready(function () {
             $("#left-ui-text").text("Choose opponent");
 
             chr.hasBeenSelected = true;
-            chr.playerCharacter = true;
 
             // set chr's stats to playerCharacter variables
             playerCharacterHitPoints = chr.hitPoints;
@@ -285,7 +262,6 @@ $(document).ready(function () {
             $("#left-ui-text").addClass("attack-button");
 
             chr.hasBeenSelected = true;
-            chr.currentEnemyCharacter = true;
 
             enemyCharacterHitPoints = chr.hitPoints;
             enemyCharacterCounterAttackPoints = chr.counterAttackPoints;
@@ -298,7 +274,6 @@ $(document).ready(function () {
             if (chr === kefka) {
                 enemyOnScreenHitPoints.css({
                     "top": `${-111}px`,
-                    // "left": `${31}px`,
                     "width": `${110}px`,
                 });
             };
@@ -311,7 +286,6 @@ $(document).ready(function () {
     function resetGame() {
         $("#player-position").empty();
         $("#enemy-position").empty();
-        // playerOnScreenHitPoints.removeAttr('style');
         $("#game-end-popup-div").remove();
         $("#game-end-popup-text").remove();
         $(".portrait").hover(function () {
@@ -343,9 +317,6 @@ $(document).ready(function () {
 
     function resetCharacter(chr) {
         chr.hasBeenSelected = false;
-        chr.playerCharacter = false;
-        chr.currentEnemyCharacter = false;
-        chr.defeated = false;
         chr.sprite.removeAttr('style');
     };
 
