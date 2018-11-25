@@ -37,7 +37,7 @@ $(document).ready(function () {
         sprite: $('<img id="kefka-sprite" src="assets/images/kefka-sprite.png">'),
     };
 
-
+    // set global variables
     var playerCharacterSelectPhase = true;
     var enemyCharacterSelectPhase = false;
     var battlePhase = false;
@@ -48,7 +48,7 @@ $(document).ready(function () {
     var enemyCharacterCounterAttackPoints = null;
     var killCount = 0;
 
-    // create auto elements
+    // create audio elements
     var decisiveBattle = document.createElement("audio");
     decisiveBattle.setAttribute("src", "./assets/music/decisive-battle.mp3");
     decisiveBattle.loop = true;
@@ -74,107 +74,8 @@ $(document).ready(function () {
         selectCharacter(kefka);
     });
 
-
-    // add onclick event to attack button to do attack/defense/counter-attack math
-    // if player character hp reaches 0, add "lose" message and reset game button
-    // else if enemy characters remaining = 0, add "win" message and reset game button
-    $("#left-ui-text").click(function () {
-
-        // if player dies
-        if (battlePhase === true && enemyCharacterHitPoints > playerCharacterCurrentAttackPoints && playerCharacterHitPoints <= enemyCharacterCounterAttackPoints) {
-
-            // play game over music
-            decisiveBattle.pause();
-            decisiveBattle.currentTime = 0;
-            restInPeace.play();
-
-            // subtract player current AP from enemy HP-
-            enemyCharacterHitPoints -= playerCharacterCurrentAttackPoints;
-            $(".enemy-on-screen-hit-points").text(`HP: ${enemyCharacterHitPoints}`);
-
-            // end game
-            $("#player-position").empty();
-            battlePhase = false;
-            $("#battlefield").append($('<div />').attr('id', 'game-end-popup-div'));
-            $("#game-end-popup-div").append($('<span />').attr('id', 'game-end-popup-text'));
-            $("#game-end-popup-text").text("You lose! Play again?");
-
-            // reset game
-            $("#game-end-popup-div").hover(function () {
-                $(this).css({ 'cursor': 'pointer' });
-            });
-            $("#game-end-popup-div").click(function () {
-                resetGame();
-            });
-
-            // non killing-blow
-        } else if (battlePhase === true && enemyCharacterHitPoints > playerCharacterCurrentAttackPoints) {
-
-            // subtract player current AP from enemy HP
-            enemyCharacterHitPoints -= playerCharacterCurrentAttackPoints;
-            $(".enemy-on-screen-hit-points").text(`HP: ${enemyCharacterHitPoints}`);
-
-            // buff player AP
-            playerCharacterCurrentAttackPoints += playerCharacterInitialAttackPoints;
-            console.log(`New player AP is: ${playerCharacterCurrentAttackPoints}`);
-
-            // subtract enemy's counter AP from player HP
-            playerCharacterHitPoints -= enemyCharacterCounterAttackPoints;
-            $(".player-on-screen-hit-points").text(`HP: ${playerCharacterHitPoints}`);
-
-            // killing blow(first 2 enemies)
-        } else if (battlePhase === true && enemyCharacterHitPoints <= playerCharacterCurrentAttackPoints && killCount < 2) {
-
-            // increment kill count
-            killCount++;
-            console.log(`Kill Count: ${killCount}`)
-
-            // buff player AP
-            playerCharacterCurrentAttackPoints += playerCharacterInitialAttackPoints;
-            console.log(`New player AP is: ${playerCharacterCurrentAttackPoints}`);
-
-            // empties enemy-position div
-            $("#enemy-position").empty();
-
-            // go back to enemy select phase
-            $("#left-ui-text").text("Choose opponent");
-            $("#left-ui-text").hover(function () {
-                $(this).css({ 'cursor': 'default' });
-            });
-            battlePhase = false;
-            enemyCharacterSelectPhase = true;
-
-            // killing blow(final enemy)
-        } else if (battlePhase === true && enemyCharacterHitPoints <= playerCharacterCurrentAttackPoints && killCount >= 2) {
-
-            // play victory fanfare
-            decisiveBattle.pause();
-            decisiveBattle.currentTime = 0;
-            fanfare.play();
-
-            // end game
-            $("#enemy-position").empty();
-            battlePhase = false;
-            $("#battlefield").append($('<div />').attr('id', 'game-end-popup-div'));
-            $("#game-end-popup-div").append($('<span />').attr('id', 'game-end-popup-text'));
-            $("#game-end-popup-text").text("You win! Play again?");
-
-            decisiveBattle.pause();
-
-            // reset game
-            $("#game-end-popup-div").hover(function () {
-                $(this).css({ 'cursor': 'pointer' });
-            });
-            $("#game-end-popup-div").click(function () {
-                resetGame();
-            });
-        }
-    });
-
-    /************************************ functions ************************************/
-
     function selectCharacter(chr) {
-        // if we're in player select phase and terra hasn't been selected already
+        // if we're in player select phase and chr hasn't been selected already
         if (playerCharacterSelectPhase === true && chr.hasBeenSelected === false) {
 
             // make portrait transparent
@@ -183,13 +84,13 @@ $(document).ready(function () {
                 $(chr.portrait).css({ 'cursor': 'default' });
             });
 
-            // append terra's sprite to player position
+            // append chr's sprite to player position
             chr.sprite.appendTo($("#player-position"));
             if (chr === kefka) {
                 chr.sprite.css({
                     "position": "absolute",
-                    "bottom": -20,
-                    "left": -30,
+                    "bottom": `${-20}px`,
+                    "left": `${-30}px`,
                 });
             } else {
                 chr.sprite.css({
@@ -282,6 +183,106 @@ $(document).ready(function () {
             battlePhase = true;
         }
     };
+
+
+    // add onclick event to attack button to do attack/defense/counter-attack math
+    // if player character hp reaches 0, add "lose" message and reset game button
+    // else if enemy characters remaining = 0, add "win" message and reset game button
+    $("#left-ui-text").click(function () {
+
+        // if player dies
+        if (battlePhase === true && enemyCharacterHitPoints > playerCharacterCurrentAttackPoints && playerCharacterHitPoints <= enemyCharacterCounterAttackPoints) {
+
+            // play game over music
+            decisiveBattle.pause();
+            decisiveBattle.currentTime = 0;
+            restInPeace.play();
+
+            // subtract player current AP from enemy HP
+            playerAttack();
+
+            // end game
+            endGame(player, lose);
+
+            // reset game
+            resetPrompt();
+
+            // non killing-blow
+        } else if (battlePhase === true && enemyCharacterHitPoints > playerCharacterCurrentAttackPoints) {
+
+            // subtract player current AP from enemy HP
+            playerAttack();
+
+            // subtract enemy's counter AP from player HP
+            enemyCounterAttack();
+
+            // killing blow(first 2 enemies)
+        } else if (battlePhase === true && enemyCharacterHitPoints <= playerCharacterCurrentAttackPoints && killCount < 2) {
+
+            // increment kill count
+            killCount++;
+            console.log(`Kill Count: ${killCount}`)
+
+            // buff player AP
+            playerAttack();
+
+            // empties enemy-position div
+            $("#enemy-position").empty();
+
+            // go back to enemy select phase
+            $("#left-ui-text").text("Choose opponent");
+            $("#left-ui-text").hover(function () {
+                $(this).css({ 'cursor': 'default' });
+            });
+            battlePhase = false;
+            enemyCharacterSelectPhase = true;
+
+            // killing blow(final enemy)
+        } else if (battlePhase === true && enemyCharacterHitPoints <= playerCharacterCurrentAttackPoints && killCount >= 2) {
+
+            // play victory fanfare
+            decisiveBattle.pause();
+            decisiveBattle.currentTime = 0;
+            fanfare.play();
+
+            // end game
+            endGame(enemy, win);
+
+            // reset game
+            resetPrompt();
+        }
+    });
+
+    function resetPrompt() {
+        $("#game-end-popup-div").hover(function () {
+            $(this).css({ 'cursor': 'pointer' });
+        });
+        $("#game-end-popup-div").click(function () {
+            resetGame();
+        });
+    }
+
+    function playerAttack() {
+        enemyCharacterHitPoints -= playerCharacterCurrentAttackPoints;
+        $(".enemy-on-screen-hit-points").text(`HP: ${enemyCharacterHitPoints}`);
+
+        // buff player AP
+        playerCharacterCurrentAttackPoints += playerCharacterInitialAttackPoints;
+        console.log(`New player AP is: ${playerCharacterCurrentAttackPoints}`);
+    }
+
+    function enemyCounterAttack() {
+        playerCharacterHitPoints -= enemyCharacterCounterAttackPoints;
+        $(".player-on-screen-hit-points").text(`HP: ${playerCharacterHitPoints}`);
+    }
+
+    function endGame(emptyPos, outcome) {
+        $(`#${emptyPos}-position`).empty();
+        battlePhase = false;
+        $("#battlefield").append($('<div />').attr('id', 'game-end-popup-div'));
+        $("#game-end-popup-div").append($('<span />').attr('id', 'game-end-popup-text'));
+        $("#game-end-popup-text").text(`You ${outcome}! Play again?`);
+    }
 
     function resetGame() {
         $("#player-position").empty();
