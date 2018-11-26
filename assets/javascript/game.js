@@ -37,6 +37,7 @@ $(document).ready(function () {
         sprite: $('<img id="kefka-sprite" src="assets/images/kefka-sprite.png">'),
     };
 
+
     // set global variables
     var playerCharacterSelectPhase = true;
     var enemyCharacterSelectPhase = false;
@@ -57,10 +58,11 @@ $(document).ready(function () {
     var restInPeace = document.createElement("audio");
     restInPeace.setAttribute("src", "./assets/music/rest-in-peace.mp3");
 
-    // add onclick events to portraits to select player and computer characters and create battle-sprite images and attack button
+    // add onclick events to portraits to select player and computer characters as well as create battle-sprite images and attack button
     $(".portrait").hover(function () {
         $(this).css({ 'cursor': 'pointer' });
     });
+
     terra.portrait.click(function () {
         selectCharacter(terra);
     });
@@ -105,7 +107,7 @@ $(document).ready(function () {
 
             chr.hasBeenSelected = true;
 
-            // set chr's stats to playerCharacter variables
+            // set chr's stats to playerCharacter variable values
             playerCharacterHitPoints = chr.hitPoints;
             playerCharacterInitialAttackPoints = chr.attackPoints;
             playerCharacterCurrentAttackPoints = chr.attackPoints;
@@ -202,7 +204,7 @@ $(document).ready(function () {
             playerAttack();
 
             // end game
-            endGame(player, lose);
+            endGame("player", "lose");
 
             // reset game
             resetPrompt();
@@ -246,13 +248,16 @@ $(document).ready(function () {
             fanfare.play();
 
             // end game
-            endGame(enemy, win);
+            endGame("enemy", "win");
 
             // reset game
             resetPrompt();
         }
     });
 
+
+    /* ------------------------------- Functions ------------------------------- */
+    
     function resetPrompt() {
         $("#game-end-popup-div").hover(function () {
             $(this).css({ 'cursor': 'pointer' });
